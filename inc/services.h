@@ -8,11 +8,11 @@
 #ifndef INCLUDES_SERVICES_H_
 #define INCLUDES_SERVICES_H_
 
-#include <stm32f4xx_custom.h>
+//#include <stm32f4xx_custom.h>
 #include "stm32f4xx_conf.h"
 #include "leds.h"
 #include "scheduler.h"
-//#include "mcuperipherals.h"
+#include "mcuperipherals.h"
 #include "delay.h"
 
 

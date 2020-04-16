@@ -11,9 +11,16 @@
 
 #include "stm32f4xx.h"
 #include "leds.h"
+#include "clock.h"
+#include "mcuperipherals.h"
+#include "scheduler.h"
 			
 int main(void)
 {
+	Clock_config();
+	Scheduler_init();									// inicializace kooperativniho scheduleru a jeho odstartovani
+	Scheduler_start();									// nyni je jiz mozne zakladat tasky
+	mcuperipherals_init();								// inicializace periferii
 	leds_config();
 
 	while (1)

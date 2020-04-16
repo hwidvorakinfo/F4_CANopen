@@ -6,20 +6,21 @@
  */
 
 #include "services.h"
+#include "application.h"
 
 
 void LED_service(void)
 {
 	uint16_t led_port;
 
-	led_port = GPIO_ReadOutputData(KIT_LED_PORT);
-	if (led_port & KIT_GREEN_LED)
+	led_port = GPIO_ReadOutputData(STATUS_LED_PORT);
+	if (led_port & STATUS_LED_PIN)
 	{
-		GPIO_ResetBits(KIT_LED_PORT, KIT_GREEN_LED);				// orange LED off
+		GPIO_ResetBits(STATUS_LED_PORT, STATUS_LED_PIN);				// orange LED off
 	}
 	else
 	{
-		GPIO_SetBits(KIT_LED_PORT, KIT_GREEN_LED);					// orange LED off
+		GPIO_SetBits(STATUS_LED_PORT, STATUS_LED_PIN);					// orange LED off
 	}
 }
 
