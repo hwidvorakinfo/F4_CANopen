@@ -3,18 +3,21 @@
   * @file    main.c
   * @author  Ac6
   * @version V1.0
-  * @date    01-December-2013
+  * @date    16-April-2020
   * @brief   Default main function.
   ******************************************************************************
 */
 
 
 #include "stm32f4xx.h"
-#include "stm32f4_discovery.h"
+#include "leds.h"
 			
-
 int main(void)
 {
+	leds_config();
 
-	for(;;);
+	while (1)
+	{
+		Scheduler_Dispatch_Tasks();						// sprava tasku - spousti tasky, maze neplatne tasky
+	}
 }
