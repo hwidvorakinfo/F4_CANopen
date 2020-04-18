@@ -14,6 +14,7 @@
 #include "clock.h"
 #include "mcuperipherals.h"
 #include "scheduler.h"
+#include "can.h"
 			
 int main(void)
 {
@@ -21,7 +22,9 @@ int main(void)
 	Scheduler_init();									// inicializace kooperativniho scheduleru a jeho odstartovani
 	Scheduler_start();									// nyni je jiz mozne zakladat tasky
 	mcuperipherals_init();								// inicializace periferii
-	leds_config();
+	leds_config();										// stavova led
+	can_init();
+	//can_debug();
 
 	while (1)
 	{

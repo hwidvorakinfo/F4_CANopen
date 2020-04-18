@@ -30,6 +30,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 #include "scheduler.h"
+#include "can.h"
+#include "leds.h"
 
 /** @addtogroup Template_Project
   * @{
@@ -41,6 +43,8 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+
+extern CanRxMsg RxMessage;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
@@ -160,6 +164,58 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
+
+/**
+  * @brief  This function handles CAN2 RX0 request.
+  * @param  None
+  * @retval None
+  */
+void CAN2_RX0_IRQHandler(void)
+{
+#ifdef CAN_RECEIVER
+	volatile uint8_t data;
+	CAN_Receive(CANx, CAN_FIFO0, &RxMessage);
+
+	if ((RxMessage.StdId == 0x321) && (RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1))
+	{
+		if (RxMessage.Data[0] == 0x55)
+		{
+			leds_set_function_led(1);
+		}
+		else
+		if (RxMessage.Data[0] == 0xAA)
+		{
+			leds_set_function_led(0);
+		}
+	}
+#endif
+}
+
+/**
+  * @brief  This function handles CAN2 RX1 request.
+  * @param  None
+  * @retval None
+  */
+void CAN2_RX1_IRQHandler(void)
+{
+#ifdef CAN_RECEIVER
+	volatile uint8_t data;
+	CAN_Receive(CANx, CAN_FIFO1, &RxMessage);
+
+	if ((RxMessage.StdId == 0x321) && (RxMessage.IDE == CAN_ID_STD) && (RxMessage.DLC == 1))
+	{
+		if (RxMessage.Data[0] == 0x55)
+		{
+			leds_set_function_led(1);
+		}
+		else
+		if (RxMessage.Data[0] == 0xAA)
+		{
+			leds_set_function_led(0);
+		}
+	}
+#endif
+}
 
 
 /**

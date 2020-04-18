@@ -20,6 +20,7 @@
 
 // periody jsou v milisekundach, neboli zakladni periode SysTick casovace
 #define LED_SERVICE_PERIOD				(SCHEDULERPERIOD * 500 MILISEKUND)
+#define CAN_SERVICE_PERIOD				(SCHEDULERPERIOD * 1000 MILISEKUND)
 
 #define FREE			0
 #define STARTED			127
@@ -29,6 +30,7 @@
 // sluzby
 void LED_service(void);
 void Delay_service(void);
+void CAN_service(void);
 
 
 #endif /* INCLUDES_SERVICES_H_ */

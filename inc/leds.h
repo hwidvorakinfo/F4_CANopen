@@ -15,5 +15,6 @@
 #include "services.h"
 
 void leds_config(void);
+void leds_set_function_led(uint8_t state);
 
 #endif /* INCLUDES_LEDS_H_ */

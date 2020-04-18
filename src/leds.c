@@ -6,6 +6,7 @@
  */
 
 #include "leds.h"
+#include "application.h"
 
 void leds_config(void)
 {
@@ -14,5 +15,16 @@ void leds_config(void)
 	{
 		// chyba pri zalozeni service
 	}
+}
 
+void leds_set_function_led(uint8_t state)
+{
+	if (state)
+	{
+		GPIO_SetBits(FUNCTION_LED_PORT, FUNCTION_LED_PIN);
+	}
+	else
+	{
+		GPIO_ResetBits(FUNCTION_LED_PORT, FUNCTION_LED_PIN);
+	}
 }

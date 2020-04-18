@@ -7,6 +7,7 @@
 
 #include "services.h"
 #include "application.h"
+#include "can.h"
 
 
 void LED_service(void)
@@ -29,4 +30,8 @@ void Delay_service(void)
 	Set_Delay_finished(DELAY_FINISHED);
 }
 
+void CAN_service(void)
+{
+	can_test();
+}
 
