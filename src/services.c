@@ -48,7 +48,30 @@ void CANopen_service(void)
 	timer1msDiff = timer1msCopy - timer1msPrevious;
 	timer1msPrevious = timer1msCopy;
 
-	/* CANopen process */
+	// CANopen process
 	CO_process(CO, timer1msDiff, NULL);
+
+	// PDO process
+    if(CO->CANmodule[0]->CANnormal)
+    {
+        bool_t syncWas;
+
+        /* Process Sync */
+        syncWas = CO_process_SYNC(CO, CANOPEN_SERVICE_PERIOD * 1000);
+
+        /* Read inputs */
+        CO_process_RPDO(CO, syncWas);
+
+        /* Further I/O or nonblocking application code may go here. */
+
+        /* Write outputs */
+        CO_process_TPDO(CO, syncWas, CANOPEN_SERVICE_PERIOD * 1000);
+
+        /* verify timer overflow */
+        if(0)
+        {
+            CO_errorReport(CO->em, CO_EM_ISR_TIMER_OVERFLOW, CO_EMC_SOFTWARE_INTERNAL, 0U);
+        }
+    }
 }
 
