@@ -15,6 +15,7 @@
 #include "mcuperipherals.h"
 #include "scheduler.h"
 #include "can.h"
+#include "CANopen.h"
 			
 int main(void)
 {

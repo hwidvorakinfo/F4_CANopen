@@ -25,7 +25,7 @@
 #define CAN_TX_SOURCE              GPIO_PinSource6
 
 //#define CAN_RECEIVER
-#define CAN_TRANSMITER
+//#define CAN_TRANSMITER
 
 /**
   * @brief  Configures the CAN environment.

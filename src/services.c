@@ -8,7 +8,9 @@
 #include "services.h"
 #include "application.h"
 #include "can.h"
+#include "CANopen.h"
 
+extern volatile uint16_t CO_timer1ms;
 
 void LED_service(void)
 {
@@ -33,5 +35,20 @@ void Delay_service(void)
 void CAN_service(void)
 {
 	can_test();
+}
+
+void CANopen_service(void)
+{
+	//CO_ReturnError_t err;
+	static volatile uint16_t timer1msPrevious;
+	volatile uint16_t timer1msCopy;
+	volatile uint16_t timer1msDiff;
+
+	timer1msCopy = CO_timer1ms;
+	timer1msDiff = timer1msCopy - timer1msPrevious;
+	timer1msPrevious = timer1msCopy;
+
+	/* CANopen process */
+	CO_process(CO, timer1msDiff, NULL);
 }
 

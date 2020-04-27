@@ -8,6 +8,7 @@
 #include "can.h"
 #include "scheduler.h"
 #include "services.h"
+#include "CANopen.h"
 
 CAN_InitTypeDef        CAN_InitStructure;
 CAN_FilterInitTypeDef  CAN_FilterInitStructure;
@@ -18,6 +19,12 @@ static void can_config(void);
 static void can_irq_config(void);
 static void Init_RxMes(CanRxMsg *RxMessage);
 
+struct CANbase {
+    uintptr_t baseAddress;  /**< Base address of the CAN module */
+};
+
+volatile uint16_t   CO_timer1ms = 0U;   /* variable increments each millisecond */
+
 /**
   * @brief  Configures the CAN environment.
   * @param  None
@@ -25,11 +32,27 @@ static void Init_RxMes(CanRxMsg *RxMessage);
   */
 void can_init(void)
 {
-	can_irq_config();
-	can_config();
+	CO_ReturnError_t err;
+
+	struct CANbase canBase = {
+			.baseAddress = CANx,  /* CAN module address */
+	};
+
+	/* initialize CANopen */
+	err = CO_init((void *)canBase.baseAddress, 10/* NodeID */, 125 /* bit rate */);
+	if(err != CO_ERROR_NO)
+	{
+		while(1);
+		/* CO_errorReport(CO->em, CO_EM_MEMORY_ALLOCATION_ERROR, CO_EMC_SOFTWARE_INTERNAL, err); */
+	}
+
+	CO_CANsetNormalMode(CO->CANmodule[0]);
+
+	///can_irq_config();
+	///can_config();
 
 	// zalozeni ulohy posilani CAN zprav
-	if(Scheduler_Add_Task(CAN_service, 0, CAN_SERVICE_PERIOD) == SCH_MAX_TASKS)
+	if(Scheduler_Add_Task(CANopen_service, 0, CANOPEN_SERVICE_PERIOD) == SCH_MAX_TASKS)
 	{
 		// chyba pri zalozeni service
 	}
@@ -75,7 +98,7 @@ static void can_config(void)
 	CAN_InitStructure.CAN_TTCM = DISABLE;
 	CAN_InitStructure.CAN_ABOM = DISABLE;
 	CAN_InitStructure.CAN_AWUM = DISABLE;
-	CAN_InitStructure.CAN_NART = DISABLE;		// non-resending enabled
+	CAN_InitStructure.CAN_NART = DISABLE;		// ENABLED = resending disabled
 	CAN_InitStructure.CAN_RFLM = DISABLE;
 	CAN_InitStructure.CAN_TXFP = DISABLE;
 	CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;
@@ -146,6 +169,18 @@ static void can_irq_config(void)
 
 	NVIC_InitStructure.NVIC_IRQChannel = CAN2_RX1_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+	NVIC_InitStructure.NVIC_IRQChannel = CAN2_TX_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x7;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+	NVIC_InitStructure.NVIC_IRQChannel = CAN2_SCE_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x7;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
