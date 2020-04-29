@@ -176,7 +176,7 @@ CO_ReturnError_t CO_CANmodule_init(
     CAN_Init(CAN_MASTER, &CAN_InitStructure);
 
     memset(&CAN_FilterInitStruct, 0, sizeof (CAN_FilterInitStruct));
-    CAN_FilterInitStruct.CAN_FilterNumber = 0;
+    CAN_FilterInitStruct.CAN_FilterNumber = 14;
     CAN_FilterInitStruct.CAN_FilterIdHigh = 0;
     CAN_FilterInitStruct.CAN_FilterIdLow = 0;
     CAN_FilterInitStruct.CAN_FilterMaskIdHigh = 0;

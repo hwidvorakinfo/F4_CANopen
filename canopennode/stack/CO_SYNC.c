@@ -239,7 +239,7 @@ CO_ReturnError_t CO_SYNC_init(
     }
 
     /* Configure object variables */
-    SYNC->isProducer = (COB_ID_SYNCMessage&0x40000000L) ? true : false;
+    SYNC->isProducer = (COB_ID_SYNCMessage & 0x40000000L) ? true : false;
     SYNC->COB_ID = COB_ID_SYNCMessage&0x7FF;
 
     SYNC->periodTime = communicationCyclePeriod;

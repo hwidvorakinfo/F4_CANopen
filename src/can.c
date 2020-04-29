@@ -39,7 +39,7 @@ void can_init(void)
 	};
 
 	/* initialize CANopen */
-	err = CO_init((void *)canBase.baseAddress, 10/* NodeID */, 125 /* bit rate */);
+	err = CO_init((void *)canBase.baseAddress, 11/* NodeID */, 125 /* bit rate */);
 	if(err != CO_ERROR_NO)
 	{
 		while(1);
@@ -56,6 +56,8 @@ void can_init(void)
 	{
 		// chyba pri zalozeni service
 	}
+
+	CO_OD_RAM.readInput8Bit[0] = 0xAB;
 }
 
 

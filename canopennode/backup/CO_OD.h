@@ -1,38 +1,34 @@
-/*******************************************************************************
-
-   File: CO_OD.h
-   CANopen Object Dictionary.
-
-   Copyright (C) 2004-2008 Janez Paternoster
-
-   License: GNU Lesser General Public License (LGPL).
-
-   <http://canopennode.sourceforge.net>
-
-   (For more information see <CO_SDO.h>.)
-*/
 /*
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU Lesser General Public License as published by
-   the Free Software Foundation, either version 2.1 of the License, or
-   (at your option) any later version.
+ * CANopen Object Dictionary.
+ *
+ * This file was automatically generated with CANopenNode Object
+ * Dictionary Editor. DON'T EDIT THIS FILE MANUALLY !!!!
+ * Object Dictionary Editor is currently an older, but functional web
+ * application. For more info see See 'Object_Dictionary_Editor/about.html' in
+ * <http://sourceforge.net/p/canopennode/code_complete/ci/master/tree/>
+ * For more information on CANopen Object Dictionary see <CO_SDO.h>.
+ *
+ * @file        CO_OD.h
+ * @author      Janez Paternoster
+ * @copyright   2010 - 2020 Janez Paternoster
+ *
+ * This file is part of CANopenNode, an opensource CANopen Stack.
+ * Project home page is <https://github.com/CANopenNode/CANopenNode>.
+ * For more information on CANopen see <http://www.can-cia.org/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-   Author: Janez Paternoster
-
-
-   This file was automatically generated with CANopenNode Object
-   Dictionary Editor. DON'T EDIT THIS FILE MANUALLY !!!!
-
-*******************************************************************************/
 
 #ifndef CO_OD_H
 #define CO_OD_H
@@ -55,20 +51,35 @@
    typedef oChar_t      OCTET_STRING;
    typedef domain_t     DOMAIN;
 
+   #ifndef timeOfDay_t
+    typedef union {
+        unsigned long long ullValue;
+        struct {
+            unsigned long ms:28;
+            unsigned reserved:4;
+            unsigned days:16;
+            unsigned reserved2:16;
+        };
+    }timeOfDay_t;
+#endif
+
+    typedef timeOfDay_t TIME_OF_DAY;
+    typedef timeOfDay_t TIME_DIFFERENCE;
+
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     IO
-      FileVersion:  3.0
-      CreationTime: 18:48:35
-      CreationDate: 2020-04-29
-      CreatedBy:    -
+      FileName:     IO Example
+      FileVersion:  -
+      CreationTime: 18:04:29
+      CreationDate: 2016-03-25
+      CreatedBy:    JP
 *******************************************************************************/
 
 
 /*******************************************************************************
    DEVICE INFO:
-      VendorName:     Paternoster
+      VendorName:     CANopenNode
       VendorNumber:   0
       ProductName:    CANopenNode
       ProductNumber:  0
@@ -79,17 +90,16 @@
    FEATURES
 *******************************************************************************/
    #define CO_NO_SYNC                     1   //Associated objects: 1005, 1006, 1007, 2103, 2104
-   #define CO_NO_LSS_SERVER               0   
-   #define CO_NO_TIME                     1   //Associated objects: 1012, 1013
-   #define CO_NO_TRACE                    0   
-   #define CO_NO_LSS_CLIENT               0   
+   #define CO_NO_TIME                     1   //Associated objects: 1012-1013
    #define CO_NO_EMERGENCY                1   //Associated objects: 1014, 1015
    #define CO_NO_SDO_SERVER               1   //Associated objects: 1200
-   #define CO_NO_SDO_CLIENT               0   
+   #define CO_NO_SDO_CLIENT               0
    #define CO_NO_RPDO                     4   //Associated objects: 1400, 1401, 1402, 1403, 1600, 1601, 1602, 1603
    #define CO_NO_TPDO                     4   //Associated objects: 1800, 1801, 1802, 1803, 1A00, 1A01, 1A02, 1A03
-   #define CO_NO_NMT_MASTER               1   
-
+   #define CO_NO_NMT_MASTER               0
+   #define CO_NO_TRACE                    0
+   #define CO_NO_LSS_SERVER               0
+   #define CO_NO_LSS_CLIENT               0
 
 /*******************************************************************************
    OBJECT DICTIONARY
@@ -163,6 +173,13 @@
                DOMAIN         domain;
                }              OD_testVar_t;
 
+/*2130      */ typedef struct{
+               UNSIGNED8      maxSubIndex;
+               VISIBLE_STRING string[30];
+               UNSIGNED64     epochTimeBaseMs;
+               UNSIGNED32     epochTimeOffsetMs;
+               }              OD_time_t;
+
 
 /*******************************************************************************
    STRUCTURES FOR VARIABLES IN DIFFERENT MEMORY LOCATIONS
@@ -178,7 +195,6 @@ struct sCO_OD_RAM{
 /*1003      */ UNSIGNED32     preDefinedErrorField[8];
 /*1010      */ UNSIGNED32     storeParameters[1];
 /*1011      */ UNSIGNED32     restoreDefaultParameters[1];
-/*1013      */ UNSIGNED8      COB_ID_DIFFERENCE;
 /*2100      */ OCTET_STRING   errorStatusBits[10];
 /*2103      */ UNSIGNED16     SYNCCounter;
 /*2104      */ UNSIGNED16     SYNCTime;
@@ -187,6 +203,7 @@ struct sCO_OD_RAM{
 /*2109      */ INTEGER16      voltage[1];
 /*2110      */ INTEGER32      variableInt32[16];
 /*2120      */ OD_testVar_t   testVar;
+/*2130      */ OD_time_t      time;
 /*6000      */ UNSIGNED8      readInput8Bit[8];
 /*6200      */ UNSIGNED8      writeOutput8Bit[8];
 /*6401      */ INTEGER16      readAnalogueInput16Bit[12];
@@ -214,7 +231,7 @@ struct sCO_OD_ROM{
 /*1005      */ UNSIGNED32     COB_ID_SYNCMessage;
 /*1006      */ UNSIGNED32     communicationCyclePeriod;
 /*1007      */ UNSIGNED32     synchronousWindowLength;
-/*1008      */ VISIBLE_STRING manufacturerDeviceName[6];
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[11];
 /*1009      */ VISIBLE_STRING manufacturerHardwareVersion[4];
 /*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[4];
 /*1012      */ UNSIGNED32     COB_ID_TIME;
@@ -272,9 +289,9 @@ extern struct sCO_OD_ROM CO_OD_ROM;
 /*1007, Data Type: UNSIGNED32 */
       #define OD_synchronousWindowLength                 CO_OD_ROM.synchronousWindowLength
 
-/*1008, Data Type: VISIBLE_STRING, Array[6] */
+/*1008, Data Type: VISIBLE_STRING, Array[11] */
       #define OD_manufacturerDeviceName                  CO_OD_ROM.manufacturerDeviceName
-      #define ODL_manufacturerDeviceName_stringLength    6
+      #define ODL_manufacturerDeviceName_stringLength    11
 
 /*1009, Data Type: VISIBLE_STRING, Array[4] */
       #define OD_manufacturerHardwareVersion             CO_OD_ROM.manufacturerHardwareVersion
@@ -296,9 +313,6 @@ extern struct sCO_OD_ROM CO_OD_ROM;
 
 /*1012, Data Type: UNSIGNED32 */
       #define OD_COB_ID_TIME                             CO_OD_ROM.COB_ID_TIME
-
-/*1013, Data Type: UNSIGNED8 */
-      #define OD_COB_ID_DIFFERENCE                       CO_OD_RAM.COB_ID_DIFFERENCE
 
 /*1014, Data Type: UNSIGNED32 */
       #define OD_COB_ID_EMCY                             CO_OD_ROM.COB_ID_EMCY
@@ -400,6 +414,9 @@ extern struct sCO_OD_ROM CO_OD_ROM;
 /*2120, Data Type: OD_testVar_t */
       #define OD_testVar                                 CO_OD_RAM.testVar
 
+/*2130, Data Type: OD_time_t */
+      #define OD_time                                    CO_OD_RAM.time
+
 /*6000, Data Type: UNSIGNED8, Array[8] */
       #define OD_readInput8Bit                           CO_OD_RAM.readInput8Bit
       #define ODL_readInput8Bit_arrayLength              8
@@ -418,3 +435,4 @@ extern struct sCO_OD_ROM CO_OD_ROM;
 
 
 #endif
+

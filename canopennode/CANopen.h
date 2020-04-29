@@ -65,7 +65,7 @@ extern "C" {
 
 
     #include "CO_driver.h"
-    #include "CO_OD.h"
+    #include <CO_OD.h>
     #include "CO_SDO.h"
     #include "CO_Emergency.h"
     #include "CO_NMT_Heartbeat.h"

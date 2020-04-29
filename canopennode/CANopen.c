@@ -878,7 +878,6 @@ CO_NMT_reset_cmd_t CO_process(
             OD_inhibitTimeEMCY,
             timerNext_ms);
 
-// pro NMT processu se zastavi systick IRQ
     reset = CO_NMT_process(
             co->NMT,
             timeDifference_ms,

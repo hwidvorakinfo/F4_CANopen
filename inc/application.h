@@ -14,6 +14,10 @@
 
 #define OUTPUT_CLOCKS		RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB | RCC_AHB1Periph_GPIOC | RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOF
 
+#define CENTRAL
+//#define SENSOR
+
+
 // modifikace dle verze desky, odkomentovat #define nize podle pozadovane verze
 // - VERSION_A je prvni verze
 // - VERSION_B je druha verze

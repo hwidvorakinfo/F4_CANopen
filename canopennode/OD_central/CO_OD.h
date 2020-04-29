@@ -60,7 +60,7 @@
    FILE INFO:
       FileName:     IO
       FileVersion:  3.0
-      CreationTime: 18:48:35
+      CreationTime: 13:18:02
       CreationDate: 2020-04-29
       CreatedBy:    -
 *******************************************************************************/
@@ -88,7 +88,7 @@
    #define CO_NO_SDO_CLIENT               0   
    #define CO_NO_RPDO                     4   //Associated objects: 1400, 1401, 1402, 1403, 1600, 1601, 1602, 1603
    #define CO_NO_TPDO                     4   //Associated objects: 1800, 1801, 1802, 1803, 1A00, 1A01, 1A02, 1A03
-   #define CO_NO_NMT_MASTER               1   
+   #define CO_NO_NMT_MASTER               0   
 
 
 /*******************************************************************************
@@ -214,7 +214,7 @@ struct sCO_OD_ROM{
 /*1005      */ UNSIGNED32     COB_ID_SYNCMessage;
 /*1006      */ UNSIGNED32     communicationCyclePeriod;
 /*1007      */ UNSIGNED32     synchronousWindowLength;
-/*1008      */ VISIBLE_STRING manufacturerDeviceName[6];
+/*1008      */ VISIBLE_STRING manufacturerDeviceName[7];
 /*1009      */ VISIBLE_STRING manufacturerHardwareVersion[4];
 /*100A      */ VISIBLE_STRING manufacturerSoftwareVersion[4];
 /*1012      */ UNSIGNED32     COB_ID_TIME;
@@ -272,9 +272,9 @@ extern struct sCO_OD_ROM CO_OD_ROM;
 /*1007, Data Type: UNSIGNED32 */
       #define OD_synchronousWindowLength                 CO_OD_ROM.synchronousWindowLength
 
-/*1008, Data Type: VISIBLE_STRING, Array[6] */
+/*1008, Data Type: VISIBLE_STRING, Array[7] */
       #define OD_manufacturerDeviceName                  CO_OD_ROM.manufacturerDeviceName
-      #define ODL_manufacturerDeviceName_stringLength    6
+      #define ODL_manufacturerDeviceName_stringLength    7
 
 /*1009, Data Type: VISIBLE_STRING, Array[4] */
       #define OD_manufacturerHardwareVersion             CO_OD_ROM.manufacturerHardwareVersion

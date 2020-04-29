@@ -73,5 +73,7 @@ void CANopen_service(void)
             CO_errorReport(CO->em, CO_EM_ISR_TIMER_OVERFLOW, CO_EMC_SOFTWARE_INTERNAL, 0U);
         }
     }
+    CO_OD_RAM.readInput8Bit[0] ^= 0xFF;
 }
+
 
